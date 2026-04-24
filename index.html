@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Curo Health Enterprise | Employee Wellness Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0f4c8a;
+    --primary-light: #1a6fc4;
+    --accent: #00c4b4;
+    --accent2: #f97316;
+    --danger: #ef4444;
+    --warn: #f59e0b;
+    --success: #10b981;
+    --bg: #f0f4f8;
+    --surface: #ffffff;
+    --surface2: #f8fafc;
+    --border: #e2e8f0;
+    --text: #0f172a;
+    --muted: #64748b;
+    --faint: #94a3b8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--primary);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 20px rgba(15,76,138,0.3);
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-logo {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), #00a896);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Sora', sans-serif;
+    font-weight: 800; font-size: 16px; color: #fff;
+    letter-spacing: -1px;
+  }
+
+  .nav-wordmark {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800; font-size: 20px;
+    color: #fff; letter-spacing: -0.5px;
+  }
+
+  .nav-wordmark span { color: var(--accent); }
+
+  .nav-badge {
+    background: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.85);
+    font-size: 10px; font-weight: 600;
+    padding: 3px 8px; border-radius: 20px;
+    letter-spacing: 0.5px;
+    margin-left: 8px;
+  }
+
+  .nav-tabs {
+    display: flex; gap: 4px;
+  }
+
+  .nav-tab {
+    background: none; border: none;
+    color: rgba(255,255,255,0.65);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 600;
+    padding: 8px 16px; border-radius: 8px;
+    cursor: pointer; transition: 0.2s;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .nav-tab:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .nav-tab.active { background: rgba(255,255,255,0.18); color: #fff; }
+
+  .nav-right {
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .nav-client {
+    font-size: 12px; color: rgba(255,255,255,0.7);
+    text-align: right; line-height: 1.3;
+  }
+
+  .nav-client strong { display: block; color: #fff; font-size: 13px; }
+
+  /* Mobile nav */
+  .mobile-menu-btn {
+    display: none;
+    background: none; border: none;
+    color: #fff; font-size: 22px; cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .nav-tabs { display: none; }
+    .mobile-menu-btn { display: block; }
+    .nav-right .nav-client { display: none; }
+    nav { padding: 0 16px; }
+  }
+
+  /* Mobile drawer */
+  .mobile-drawer {
+    display: none;
+    position: fixed; top: 64px; left: 0; right: 0;
+    background: var(--primary);
+    z-index: 999; padding: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  .mobile-drawer.open { display: block; }
+
+  .mobile-drawer .nav-tab {
+    display: flex; width: 100%;
+    padding: 12px 16px; margin-bottom: 4px;
+    border-radius: 10px;
+  }
+
+  /* ── PAGES ── */
+  .page { display: none; padding: 28px 24px; max-width: 1320px; margin: 0 auto; }
+  .page.active { display: block; animation: fadeUp 0.3s ease; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── LAYOUT GRIDS ── */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr 300px;
+    gap: 20px;
+    align-items: start;
+  }
+
+  @media (max-width: 1200px) {
+    .main-grid { grid-template-columns: 1fr 280px; }
+    .sidebar-left { display: none; }
+  }
+
+  @media (max-width: 800px) {
+    .main-grid { grid-template-columns: 1fr; }
+    .sidebar-right { display: none; }
+    .page { padding: 16px 12px; }
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    border: 1px solid var(--border);
+  }
+
+  .card-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 11px; font-weight: 700;
+    color: var(--faint);
+    text-transform: uppercase; letter-spacing: 1.2px;
+    margin-bottom: 16px; display: block;
+  }
+
+  /* ── SELECTS ── */
+  .picker-label {
+    font-size: 10px; font-weight: 700;
+    color: var(--faint); margin-bottom: 6px;
+    display: block; text-transform: uppercase; letter-spacing: 1px;
+  }
+
+  select {
+    width: 100%; padding: 10px 12px;
+    border-radius: 10px; border: 1.5px solid var(--border);
+    font-size: 13px; font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface2); cursor: pointer;
+    color: var(--text); margin-bottom: 16px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center;
+    padding-right: 32px;
+    transition: border-color 0.2s;
+  }
+
+  select:focus { outline: none; border-color: var(--primary-light); }
+
+  /* ── AVATAR ── */
+  .avatar {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: #fff; font-family: 'Sora', sans-serif;
+    font-size: 22px; font-weight: 800;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px;
+  }
+
+  /* ── HERO BANNER ── */
+  .health-hero {
+    background: linear-gradient(135deg, var(--primary) 0%, #1a5fa8 60%, #1e6db5 100%);
+    color: #fff; border-radius: 20px;
+    padding: 28px 32px; margin-bottom: 20px;
+    position: relative; overflow: hidden;
+  }
+
+  .health-hero::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(0,196,180,0.12);
+  }
+
+  .health-hero::after {
+    content: '';
+    position: absolute; bottom: -60px; right: 80px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .hero-top {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; margin-bottom: 20px;
+  }
+
+  .score-ring {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 5px solid var(--accent);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.08);
+    flex-shrink: 0;
+  }
+
+  .score-num {
+    font-family: 'Sora', sans-serif;
+    font-size: 26px; font-weight: 800; line-height: 1;
+  }
+
+  .score-lbl { font-size: 8px; opacity: 0.7; letter-spacing: 1px; margin-top: 2px; }
+
+  .hero-info { flex: 1; padding: 0 20px; }
+
+  .hero-greeting {
+    font-family: 'Sora', sans-serif;
+    font-size: 20px; font-weight: 800; margin-bottom: 4px;
+  }
+
+  .hero-sub { font-size: 13px; opacity: 0.75; }
+
+  .hero-badge {
+    background: rgba(16,185,129,0.25);
+    border: 1px solid rgba(16,185,129,0.4);
+    color: #6ee7b7;
+    font-size: 11px; font-weight: 700;
+    padding: 6px 14px; border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .hero-metrics {
+    display: flex; gap: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    flex-wrap: wrap;
+  }
+
+  .hero-metric { font-size: 12px; opacity: 0.8; }
+  .hero-metric strong { display: block; font-size: 15px; font-weight: 700; opacity: 1; }
+
+  /* ── STATUS TAGS ── */
+  .tag {
+    padding: 4px 10px; border-radius: 6px;
+    font-size: 11px; font-weight: 700;
+    display: inline-block;
+  }
+
+  .tag-red { background: #fee2e2; color: #991b1b; }
+  .tag-green { background: #dcfce7; color: #166534; }
+  .tag-orange { background: #ffedd5; color: #9a3412; }
+  .tag-blue { background: #dbeafe; color: #1e40af; }
+
+  /* ── ALERT ITEMS ── */
+  .alert-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px; background: var(--surface2);
+    border-radius: 12px; margin-bottom: 8px;
+    border: 1px solid var(--border);
+    transition: 0.2s;
+  }
+
+  .alert-item:hover { border-color: #c7d2fe; transform: translateX(2px); }
+
+  .alert-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%; flex-shrink: 0;
+  }
+
+  /* ── TABLES ── */
+  .data-table { width: 100%; border-collapse: collapse; }
+
+  .data-table th {
+    text-align: left; padding: 12px 14px;
+    font-size: 10px; font-weight: 700;
+    color: var(--faint); text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .data-table td {
+    padding: 13px 14px; border-bottom: 1px solid #f1f5f9;
+    font-size: 13px; font-weight: 500;
+  }
+
+  .data-table tr:hover td { background: var(--surface2); }
+
+  .cat-row td {
+    background: linear-gradient(90deg, #eff6ff, #f8fafc);
+    font-size: 10px; font-weight: 800;
+    color: var(--primary); text-transform: uppercase;
+    letter-spacing: 0.8px; padding: 9px 14px;
+  }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 6px; padding: 12px 18px; border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700; cursor: pointer; border: none;
+    transition: 0.2s; font-size: 13px;
+  }
+
+  .btn-primary {
+    background: var(--primary); color: #fff;
+    box-shadow: 0 4px 12px rgba(15,76,138,0.25);
+  }
+
+  .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
+
+  .btn-accent {
+    background: var(--accent); color: #fff;
+    box-shadow: 0 4px 12px rgba(0,196,180,0.3);
+  }
+
+  .btn-accent:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  .btn-ghost {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    color: var(--text);
+  }
+
+  .btn-ghost:hover { border-color: var(--primary-light); color: var(--primary); }
+
+  .btn-full { width: 100%; }
+
+  /* ── STAT CARDS ── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px; margin-bottom: 20px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border-radius: 16px; padding: 22px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    position: relative; overflow: hidden;
+  }
+
+  .stat-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .stat-card.blue::after { background: var(--primary); }
+  .stat-card.green::after { background: var(--success); }
+  .stat-card.red::after { background: var(--danger); }
+  .stat-card.orange::after { background: var(--warn); }
+
+  .stat-label {
+    font-size: 10px; font-weight: 700;
+    color: var(--faint); text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 8px;
+  }
+
+  .stat-val {
+    font-family: 'Sora', sans-serif;
+    font-size: 34px; font-weight: 800;
+    color: var(--text); line-height: 1;
+  }
+
+  .stat-sub {
+    font-size: 12px; color: var(--muted);
+    margin-top: 6px;
+  }
+
+  /* ── PROGRESS BARS ── */
+  .risk-bar { margin-bottom: 18px; }
+  .risk-bar-top { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+  .risk-track { height: 8px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
+  .risk-fill { height: 100%; border-radius: 10px; transition: width 1s ease; }
+
+  /* ── NUDGE CARD ── */
+  .nudge-card {
+    background: linear-gradient(135deg, #0f4c8a, #1a6fc4);
+    border-radius: 16px; padding: 20px;
+    color: #fff; margin-bottom: 20px;
+  }
+
+  .nudge-title {
+    font-family: 'Sora', sans-serif;
+    font-size: 13px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 1px;
+    opacity: 0.7; margin-bottom: 8px;
+  }
+
+  .nudge-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 13px;
+  }
+
+  .nudge-item:last-child { border-bottom: none; }
+  .nudge-icon { font-size: 18px; }
+
+  /* ── CONSULT PROMPT ── */
+  .consult-prompt {
+    background: linear-gradient(135deg, #fff7ed, #fef3c7);
+    border: 1px solid #fed7aa;
+    border-radius: 16px; padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .consult-prompt h4 {
+    font-family: 'Sora', sans-serif;
+    font-size: 14px; font-weight: 800;
+    color: #9a3412; margin-bottom: 6px;
+  }
+
+  .consult-prompt p { font-size: 12px; color: #78350f; margin-bottom: 14px; }
+
+  /* ── EMPLOYEE LIST (ADMIN) ── */
+  .emp-row { cursor: pointer; }
+  .emp-row:hover td { background: #eff6ff; }
+
+  /* ── SCORE INDICATOR ── */
+  .score-pill {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800; font-size: 13px;
+    padding: 4px 10px; border-radius: 8px;
+  }
+
+  /* ── UPLOAD ZONE ── */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 16px; padding: 40px;
+    text-align: center; cursor: pointer;
+    transition: 0.2s; background: var(--surface2);
+    margin-bottom: 20px;
+  }
+
+  .upload-zone:hover {
+    border-color: var(--primary-light);
+    background: #eff6ff;
+  }
+
+  .upload-icon { font-size: 40px; margin-bottom: 12px; }
+  .upload-title { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .upload-sub { font-size: 12px; color: var(--muted); }
+
+  /* ── FOOTER BAR ── */
+  .footer-bar {
+    text-align: center; padding: 24px;
+    font-size: 11px; color: var(--faint);
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+  }
+
+  /* ── INFO CHIP ── */
+  .chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #f1f5f9; border-radius: 6px;
+    padding: 4px 10px; font-size: 11px; font-weight: 600;
+    color: var(--muted);
+  }
+
+  /* ── REPORT PAGE ── */
+  .report-meta {
+    display: flex; gap: 12px; flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  /* ── WELLNESS SCORE DONUT ── */
+  .donut-wrap { text-align: center; padding: 8px 0; }
+
+  /* ── COMPLIANCE BANNER ── */
+  .compliance-banner {
+    background: linear-gradient(90deg, #dcfce7, #f0fdf4);
+    border: 1px solid #86efac;
+    border-radius: 12px; padding: 14px 18px;
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px; font-size: 13px;
+  }
+
+  .compliance-banner strong { color: #166534; }
+  .compliance-banner span { color: #4ade80; font-size: 20px; }
+
+  @media (max-width: 480px) {
+    .hero-top { flex-direction: column; gap: 16px; }
+    .stat-val { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">C</div>
+    <div>
+      <div class="nav-wordmark">Curo <span>Health</span></div>
+    </div>
+    <span class="nav-badge">ENTERPRISE</span>
+  </div>
+
+  <div class="nav-tabs" id="desktop-tabs">
+    <button class="nav-tab active" onclick="showPage('dashboard', this)">
+      <span>🏠</span> Dashboard
+    </button>
+    <button class="nav-tab" onclick="showPage('records', this)">
+      <span>📋</span> Health Records
+    </button>
+    <button class="nav-tab" onclick="showPage('analytics', this)">
+      <span>📊</span> Analytics
+    </button>
+    <button class="nav-tab" onclick="showPage('admin', this)">
+      <span>⚙️</span> Admin
+    </button>
+  </div>
+
+  <div class="nav-right">
+    <div class="nav-client">
+      <strong>Infosys Ltd.</strong>
+      Plan: Care Plus · 270 employees
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobile()">☰</button>
+  </div>
+</nav>
+
+<!-- Mobile Drawer -->
+<div class="mobile-drawer" id="mobile-drawer">
+  <button class="nav-tab active" onclick="showPage('dashboard', this); closeMobile()">🏠 Dashboard</button>
+  <button class="nav-tab" onclick="showPage('records', this); closeMobile()">📋 Health Records</button>
+  <button class="nav-tab" onclick="showPage('analytics', this); closeMobile()">📊 Analytics</button>
+  <button class="nav-tab" onclick="showPage('admin', this); closeMobile()">⚙️ Admin</button>
+</div>
+
+<!-- ═══════════════ PAGE: DASHBOARD ═══════════════ -->
+<div class="page active" id="page-dashboard">
+  <div class="main-grid">
+
+    <!-- LEFT SIDEBAR -->
+    <div class="sidebar-left">
+      <div class="card">
+        <span class="card-title">Employee Profile</span>
+        <div class="picker-label">SELECT EMPLOYEE</div>
+        <select id="emp-select" onchange="updateEmployee(this.value)">
+          <option value="0">Ananya Sharma (C-9021)</option>
+          <option value="1">Rahul Verma (C-4432)</option>
+          <option value="2">Priya Nair (C-1120)</option>
+        </select>
+        <div class="picker-label">FAMILY MEMBER</div>
+        <select onchange="updateMember(this.value)" id="fam-select">
+          <option value="self">Self (Employee)</option>
+          <option value="m1">Spouse</option>
+          <option value="m2">Child</option>
+          <option value="m3">Parent</option>
+        </select>
+        <div style="text-align:center; padding:16px 0 8px;">
+          <div class="avatar" id="side-avatar">AS</div>
+          <h3 id="side-name" style="font-family:'Sora',sans-serif; font-size:16px; font-weight:800;">Ananya Sharma</h3>
+          <p style="font-size:12px; color:var(--muted); margin-top:4px;" id="side-meta">Age 31 · Female · O+</p>
+          <div style="margin-top:12px; display:flex; gap:8px; justify-content:center;">
+            <span class="chip">📍 Delhi NCR</span>
+            <span class="chip">💼 Sr. Manager</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-ghost btn-full" style="margin-bottom:10px;" onclick="alert('Digital ID Card downloading...')">
+        📄 Download Medical ID
+      </button>
+      <button class="btn btn-accent btn-full" onclick="showPage('records', document.querySelector('.nav-tab:nth-child(2)'))">
+        🩺 Start Consultation
+      </button>
+    </div>
+
+    <!-- CENTRE COLUMN -->
+    <div>
+      <!-- Compliance Banner -->
+      <div class="compliance-banner">
+        <span>✅</span>
+        <div><strong>OSH Code 2020 Compliant</strong> — Annual health screening completed for 248/270 employees. 22 pending reminders sent.</div>
+      </div>
+
+      <!-- Hero -->
+      <div class="health-hero" id="hero-banner">
+        <div class="hero-top">
+          <div style="display:flex; align-items:center; gap:16px;">
+            <div class="score-ring">
+              <span class="score-num" id="hero-score">82</span>
+              <span class="score-lbl">SCORE</span>
+            </div>
+            <div class="hero-info">
+              <div class="hero-greeting" id="hero-greeting">Hi Ananya! 👋</div>
+              <div class="hero-sub" id="hero-sub">Your health metrics are stable. 2 flags detected.</div>
+            </div>
+          </div>
+          <div class="hero-badge" id="hero-badge">🟢 Active Coverage</div>
+        </div>
+        <div class="hero-metrics">
+          <div class="hero-metric"><strong>18 Apr 2026</strong>Last Screening</div>
+          <div class="hero-metric"><strong id="hero-flags">2</strong>Flags Detected</div>
+          <div class="hero-metric"><strong>Care Plus</strong>Plan Tier</div>
+          <div class="hero-metric"><strong>₹5L</strong>Cover Active</div>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div class="card">
+        <span class="card-title">⚠️ Health Flags Requiring Attention</span>
+        <div id="alert-list"></div>
+      </div>
+
+      <!-- Consult Prompt -->
+      <div class="consult-prompt" id="consult-prompt">
+        <h4>🩺 Doctor Consultation Recommended</h4>
+        <p>Based on flagged parameters, a follow-up consultation with a Curo doctor is recommended. AI has pre-analyzed your report — consult takes ~90 seconds.</p>
+        <button class="btn btn-accent" onclick="alert('Connecting you to Curo doctor...\n\nAI has pre-loaded your health summary. Average wait: under 60 seconds.')">
+          ⚡ Consult Now — Free with your plan
+        </button>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="sidebar-right">
+      <!-- Action Plan -->
+      <div class="nudge-card">
+        <div class="nudge-title">📌 Your Action Plan This Week</div>
+        <div id="nudge-list">
+          <div class="nudge-item"><span class="nudge-icon">🚶</span>Walk 8,000 steps daily</div>
+          <div class="nudge-item"><span class="nudge-icon">💧</span>Drink 3L water per day</div>
+          <div class="nudge-item"><span class="nudge-icon">☀️</span>Vitamin D supplement (60,000 IU weekly)</div>
+          <div class="nudge-item"><span class="nudge-icon">🥗</span>Reduce refined carbs — control blood sugar</div>
+        </div>
+      </div>
+
+      <!-- Health Trends -->
+      <div class="card">
+        <span class="card-title">📈 Health Trends</span>
+        <div id="trend-list"></div>
+      </div>
+
+      <!-- Next Steps -->
+      <div class="card">
+        <span class="card-title">📅 Upcoming</span>
+        <div style="font-size:13px; color:var(--muted); line-height:1.8;">
+          <div>🔁 <strong>Retest HbA1c</strong> — Jun 2026</div>
+          <div>💊 <strong>Pharmacy order</strong> — Vitamin D due</div>
+          <div>📞 <strong>Follow-up call</strong> — Dr. Mehta, 3 May</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════ PAGE: HEALTH RECORDS ═══════════════ -->
+<div class="page" id="page-records">
+  <div style="max-width:900px; margin:0 auto;">
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:gap;">
+      <div>
+        <h2 style="font-family:'Sora',sans-serif; font-size:22px; font-weight:800;">Health Records</h2>
+        <p style="color:var(--muted); font-size:13px; margin-top:4px;">Ananya Sharma · C-9021 · Last updated: 18 Apr 2026</p>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn btn-ghost" onclick="alert('Downloading PDF report...')">⬇️ Download PDF</button>
+        <button class="btn btn-primary" onclick="alert('Sharing with doctor...')">🔗 Share with Doctor</button>
+      </div>
+    </div>
+
+    <!-- Report Meta -->
+    <div class="report-meta">
+      <span class="chip">🏥 Dr Lal PathLabs</span>
+      <span class="chip">📍 Noida Centre</span>
+      <span class="chip">🧪 Aarogyam Full Body</span>
+      <span class="chip">📅 18 Apr 2026</span>
+      <span class="chip">🆔 LAL-2026-9021</span>
+    </div>
+
+    <div class="card" style="padding:0; overflow:hidden;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Your Value</th>
+            <th>Reference Range</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cat-row"><td colspan="4">🩸 Complete Blood Count (CBC)</td></tr>
+          <tr><td>Haemoglobin</td><td>12.8 g/dL</td><td>12.0 – 16.0</td><td><span class="tag tag-green">Normal</span></td></tr>
+          <tr><td>WBC Count</td><td>7,400 /μL</td><td>4,500 – 11,000</td><td><span class="tag tag-green">Normal</span></td></tr>
+          <tr><td>Platelet Count</td><td>2.4 L/μL</td><td>1.5 – 4.0</td><td><span class="tag tag-green">Normal</span></td></tr>
+
+          <tr class="cat-row"><td colspan="4">🍬 Metabolic / Diabetes Panel</td></tr>
+          <tr><td>Fasting Blood Sugar</td><td><strong>128 mg/dL</strong></td><td>70 – 100</td><td><span class="tag tag-red">High ↑</span></td></tr>
+          <tr><td>HbA1c (Glycated Haemoglobin)</td><td><strong>6.1%</strong></td><td>4.0 – 5.6</td><td><span class="tag tag-orange">Prediabetic</span></td></tr>
+          <tr><td>Post-prandial Blood Sugar</td><td>162 mg/dL</td><td>< 140</td><td><span class="tag tag-orange">Borderline</span></td></tr>
+
+          <tr class="cat-row"><td colspan="4">❤️ Lipid Profile</td></tr>
+          <tr><td>Total Cholesterol</td><td>214 mg/dL</td><td>< 200</td><td><span class="tag tag-orange">High</span></td></tr>
+          <tr><td>LDL (Bad Cholesterol)</td><td>138 mg/dL</td><td>< 130</td><td><span class="tag tag-orange">High</span></td></tr>
+          <tr><td>HDL (Good Cholesterol)</td><td>42 mg/dL</td><td>> 40</td><td><span class="tag tag-green">Normal</span></td></tr>
+          <tr><td>Triglycerides</td><td>148 mg/dL</td><td>< 150</td><td><span class="tag tag-green">Normal</span></td></tr>
+
+          <tr class="cat-row"><td colspan="4">🫀 Liver Function Test (LFT)</td></tr>
+          <tr><td>SGPT (ALT)</td><td>42 U/L</td><td>< 41</td><td><span class="tag tag-orange">Borderline</span></td></tr>
+          <tr><td>SGOT (AST)</td><td>28 U/L</td><td>< 40</td><td><span class="tag tag-green">Normal</span></td></tr>
+          <tr><td>Total Bilirubin</td><td>0.8 mg/dL</td><td>0.2 – 1.2</td><td><span class="tag tag-green">Normal</span></td></tr>
+
+          <tr class="cat-row"><td colspan="4">🫘 Kidney Function Test (KFT)</td></tr>
+          <tr><td>Serum Creatinine</td><td>0.9 mg/dL</td><td>0.5 – 1.1</td><td><span class="tag tag-green">Normal</span></td></tr>
+          <tr><td>Uric Acid</td><td>5.2 mg/dL</td><td>2.4 – 6.0</td><td><span class="tag tag-green">Normal</span></td></tr>
+
+          <tr class="cat-row"><td colspan="4">🧬 Vitamins & Thyroid</td></tr>
+          <tr><td>Vitamin D (25-OH)</td><td><strong>16.2 ng/mL</strong></td><td>30 – 100</td><td><span class="tag tag-red">Deficient ↓</span></td></tr>
+          <tr><td>Vitamin B12</td><td>310 pg/mL</td><td>200 – 900</td><td><span class="tag tag-green">Normal</span></td></tr>
+          <tr><td>TSH (Thyroid Stimulating)</td><td>3.80 uIU/mL</td><td>0.35 – 4.94</td><td><span class="tag tag-green">Normal</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="consult-prompt">
+      <h4>🩺 3 Parameters Need Medical Review</h4>
+      <p>Blood Sugar, HbA1c, and Vitamin D are outside normal range. A Curo doctor has been pre-briefed with your report summary. Book a 90-second consultation now.</p>
+      <button class="btn btn-accent" onclick="alert('Launching Curo AI consultation...\n\nDoctor briefed. Connecting now.')">
+        ⚡ Consult Now — No waiting
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ PAGE: ANALYTICS ═══════════════ -->
+<div class="page" id="page-analytics">
+
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+    <div>
+      <h2 style="font-family:'Sora',sans-serif; font-size:22px; font-weight:800;">Workforce Health Analytics</h2>
+      <p style="color:var(--muted); font-size:13px;">Infosys Ltd. · Q2 2026 · 270 employees</p>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <button class="btn btn-ghost" onclick="alert('Generating board-ready PDF report...')">📤 Export Report</button>
+      <button class="btn btn-primary" onclick="alert('Scheduling wellness intervention...')">📅 Plan Intervention</button>
+    </div>
+  </div>
+
+  <!-- KPI Stats -->
+  <div class="stat-grid">
+    <div class="stat-card blue">
+      <div class="stat-label">Avg Health Score</div>
+      <div class="stat-val">76.4</div>
+      <div class="stat-sub">↑ 3.2 pts from Q1 2026</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">Screening Completion</div>
+      <div class="stat-val">92%</div>
+      <div class="stat-sub">248 / 270 staff · OSH Compliant ✅</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-label">High Risk Employees</div>
+      <div class="stat-val" style="color:var(--danger);">14%</div>
+      <div class="stat-sub">38 employees — immediate action</div>
+    </div>
+    <div class="stat-card orange">
+      <div class="stat-label">Consults This Month</div>
+      <div class="stat-val" style="color:var(--warn);">184</div>
+      <div class="stat-sub">↑ 34% vs. last month</div>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1.5fr 1fr; gap:20px; margin-bottom:20px;">
+    <!-- Risk Chart -->
+    <div class="card">
+      <span class="card-title">🔴 Risk Stratification — Top Concerns</span>
+      <div style="margin-top:8px;">
+        <div class="risk-bar">
+          <div class="risk-bar-top"><span>Vitamin Deficiency (D & B12)</span><span style="color:var(--warn);">58%</span></div>
+          <div class="risk-track"><div class="risk-fill" style="width:58%; background:var(--warn);"></div></div>
+        </div>
+        <div class="risk-bar">
+          <div class="risk-bar-top"><span>Metabolic / Pre-Diabetic Risk</span><span style="color:var(--danger);">34%</span></div>
+          <div class="risk-track"><div class="risk-fill" style="width:34%; background:var(--danger);"></div></div>
+        </div>
+        <div class="risk-bar">
+          <div class="risk-bar-top"><span>Lipid / Cholesterol Issues</span><span style="color:var(--primary);">28%</span></div>
+          <div class="risk-track"><div class="risk-fill" style="width:28%; background:var(--primary);"></div></div>
+        </div>
+        <div class="risk-bar">
+          <div class="risk-bar-top"><span>Hypertension / Cardiac Risk</span><span style="color:var(--muted);">12%</span></div>
+          <div class="risk-track"><div class="risk-fill" style="width:12%; background:#94a3b8;"></div></div>
+        </div>
+        <div class="risk-bar" style="margin-bottom:0;">
+          <div class="risk-bar-top"><span>Thyroid Abnormality</span><span style="color:var(--success);">9%</span></div>
+          <div class="risk-track"><div class="risk-fill" style="width:9%; background:var(--success);"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROI Card -->
+    <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+      <span class="card-title">💰 Wellness ROI</span>
+      <div style="text-align:center; padding:16px 0;">
+        <div style="font-family:'Sora',sans-serif; font-size:38px; font-weight:800; color:var(--success);">₹3.8L</div>
+        <div style="font-size:13px; color:var(--muted); margin-top:6px;">Sick-leave cost saved (Q2 2026)</div>
+      </div>
+      <hr class="divider">
+      <div style="font-size:12px; color:var(--muted); line-height:1.8;">
+        <div>📉 Absenteeism down <strong style="color:var(--text);">18%</strong> vs Q2 2025</div>
+        <div>🏥 OPD visits reduced <strong style="color:var(--text);">24%</strong></div>
+        <div>💊 Pharma cost per employee <strong style="color:var(--text);">₹420/yr</strong></div>
+      </div>
+      <hr class="divider">
+      <button class="btn btn-ghost btn-full" style="margin-top:8px;" onclick="alert('ROI breakdown report generating...')">View Full ROI Report</button>
+    </div>
+  </div>
+
+  <!-- Department Breakdown -->
+  <div class="card">
+    <span class="card-title">🏢 Department Health Breakdown</span>
+    <table class="data-table">
+      <thead>
+        <tr><th>Department</th><th>Employees</th><th>Screened</th><th>Avg Score</th><th>High Risk</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Engineering</td><td>82</td><td>78</td><td><span class="score-pill" style="background:#dcfce7; color:#166534;">81.2</span></td><td>8%</td><td><span class="tag tag-green">Good</span></td></tr>
+        <tr><td>Sales & BD</td><td>64</td><td>60</td><td><span class="score-pill" style="background:#ffedd5; color:#9a3412;">68.4</span></td><td>22%</td><td><span class="tag tag-orange">At Risk</span></td></tr>
+        <tr><td>Operations</td><td>71</td><td>68</td><td><span class="score-pill" style="background:#dcfce7; color:#166534;">74.9</span></td><td>11%</td><td><span class="tag tag-green">Good</span></td></tr>
+        <tr><td>Finance & HR</td><td>53</td><td>42</td><td><span class="score-pill" style="background:#fee2e2; color:#991b1b;">62.1</span></td><td>28%</td><td><span class="tag tag-red">Action Needed</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════ PAGE: ADMIN ═══════════════ -->
+<div class="page" id="page-admin">
+
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+    <div>
+      <h2 style="font-family:'Sora',sans-serif; font-size:22px; font-weight:800;">Enterprise Admin Panel</h2>
+      <p style="color:var(--muted); font-size:13px;">Infosys Ltd. · HR Administrator View</p>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <button class="btn btn-ghost" onclick="alert('Bulk import template downloading...')">📥 Bulk Import</button>
+      <button class="btn btn-primary" onclick="alert('Add employee form opening...')">+ Add Employee</button>
+    </div>
+  </div>
+
+  <!-- Upload Lab Reports -->
+  <div class="upload-zone" onclick="alert('File picker opening...\n\nSupported: PDF, JPG, PNG\nLabs: Dr Lal, SRL, Metropolis, Apollo\n\nAI will auto-parse parameters.')">
+    <div class="upload-icon">📂</div>
+    <div class="upload-title">Upload Lab Reports</div>
+    <div class="upload-sub">Drag & drop PDFs or click to browse · Supports Dr Lal, SRL, Metropolis, Apollo · AI auto-parses all parameters</div>
+  </div>
+
+  <!-- Employee Table -->
+  <div class="card" style="padding:0; overflow:hidden;">
+    <div style="padding:18px 22px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+      <span style="font-family:'Sora',sans-serif; font-weight:800; font-size:14px;">All Employees</span>
+      <input placeholder="🔍  Search employee..." style="padding:8px 14px; border-radius:8px; border:1.5px solid var(--border); font-size:13px; font-family:'DM Sans',sans-serif; width:220px;" />
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Emp ID</th>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Last Screening</th>
+          <th>Health Score</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="emp-row" onclick="alert('Opening Ananya Sharma profile...')">
+          <td style="font-weight:700; color:var(--primary); font-family:'Sora',sans-serif;">C-9021</td>
+          <td><strong>Ananya Sharma</strong><br><span style="font-size:11px; color:var(--muted);">Senior Manager</span></td>
+          <td>Engineering</td>
+          <td>18 Apr 2026</td>
+          <td><span class="score-pill" style="background:#dcfce7; color:#166534;">82</span></td>
+          <td><span class="tag tag-green">Healthy</span></td>
+          <td><button class="btn btn-ghost" style="padding:6px 12px; font-size:11px;" onclick="event.stopPropagation(); alert('Sending health nudge to Ananya...')">Send Nudge</button></td>
+        </tr>
+        <tr class="emp-row" onclick="alert('Opening Rahul Verma profile...')">
+          <td style="font-weight:700; color:var(--primary); font-family:'Sora',sans-serif;">C-4432</td>
+          <td><strong>Rahul Verma</strong><br><span style="font-size:11px; color:var(--muted);">Director, Operations</span></td>
+          <td>Operations</td>
+          <td>12 Mar 2026</td>
+          <td><span class="score-pill" style="background:#fee2e2; color:#991b1b;">54</span></td>
+          <td><span class="tag tag-red">At Risk</span></td>
+          <td><button class="btn btn-primary" style="padding:6px 12px; font-size:11px;" onclick="event.stopPropagation(); alert('Booking urgent consultation for Rahul Verma...')">Book Consult</button></td>
+        </tr>
+        <tr class="emp-row" onclick="alert('Opening Priya Nair profile...')">
+          <td style="font-weight:700; color:var(--primary); font-family:'Sora',sans-serif;">C-1120</td>
+          <td><strong>Priya Nair</strong><br><span style="font-size:11px; color:var(--muted);">Associate Analyst</span></td>
+          <td>Finance & HR</td>
+          <td>05 Apr 2026</td>
+          <td><span class="score-pill" style="background:#dcfce7; color:#166534;">93</span></td>
+          <td><span class="tag tag-green">Healthy</span></td>
+          <td><button class="btn btn-ghost" style="padding:6px 12px; font-size:11px;" onclick="event.stopPropagation(); alert('Sending health nudge to Priya...')">Send Nudge</button></td>
+        </tr>
+        <tr class="emp-row" onclick="alert('Opening Vikram Rao profile...')">
+          <td style="font-weight:700; color:var(--primary); font-family:'Sora',sans-serif;">C-8871</td>
+          <td><strong>Vikram Rao</strong><br><span style="font-size:11px; color:var(--muted);">Product Lead</span></td>
+          <td>Sales & BD</td>
+          <td>22 Apr 2026</td>
+          <td><span class="score-pill" style="background:#ffedd5; color:#9a3412;">68</span></td>
+          <td><span class="tag tag-orange">Watch</span></td>
+          <td><button class="btn btn-ghost" style="padding:6px 12px; font-size:11px;" onclick="event.stopPropagation(); alert('Scheduling follow-up for Vikram...')">Schedule</button></td>
+        </tr>
+        <tr style="opacity:0.5;">
+          <td style="font-weight:700; color:var(--faint); font-family:'Sora',sans-serif;">C-3341</td>
+          <td><strong>Meena Iyer</strong><br><span style="font-size:11px; color:var(--muted);">HR Business Partner</span></span></td>
+          <td>Finance & HR</td>
+          <td style="color:var(--danger); font-weight:700;">⚠️ Pending</td>
+          <td>—</td>
+          <td><span class="tag tag-blue">Invited</span></td>
+          <td><button class="btn btn-ghost" style="padding:6px 12px; font-size:11px;" onclick="event.stopPropagation(); alert('Resending invite to Meena Iyer...')">Resend Invite</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="padding:14px 22px; font-size:12px; color:var(--muted); background:var(--surface2); border-top:1px solid var(--border);">
+      Showing 5 of 270 employees · <a href="#" style="color:var(--primary); font-weight:600;">View all →</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer-bar">
+  🔒 HIPAA-aligned · ABDM Compliant · All health data encrypted at rest and in transit
+  <br>Curo Health Enterprise © 2026 · <a href="https://curowellness.com" style="color:var(--primary);">curowellness.com</a>
+</div>
+
+<script>
+  const employees = [
+    {
+      name: "Ananya Sharma", id: "C-9021", initials: "AS", score: 82,
+      meta: "Age 31 · Female · O+",
+      sub: "Your health metrics are stable. 2 flags detected.",
+      alerts: [
+        { l: "High Blood Sugar", v: "128 mg/dL (Normal: 70-100)", t: "red" },
+        { l: "Vitamin D Deficient", v: "16.2 ng/mL (Normal: 30-100)", t: "red" },
+        { l: "Cholesterol Borderline", v: "214 mg/dL (Normal: <200)", t: "orange" }
+      ],
+      trends: [
+        { l: "Glucose", v: "↑ Rising" },
+        { l: "Vitamin D", v: "↓ Declining" },
+        { l: "Weight", v: "→ Stable" },
+        { l: "Activity", v: "→ Moderate" }
+      ],
+      nudges: ["🚶 Walk 8,000 steps daily", "💧 Drink 3L water per day", "☀️ Vitamin D supplement (60,000 IU weekly)", "🥗 Reduce refined carbs to control blood sugar"]
+    },
+    {
+      name: "Rahul Verma", id: "C-4432", initials: "RV", score: 54,
+      meta: "Age 44 · Male · B+",
+      sub: "Critical: 3 high-risk parameters detected. Consult urgent.",
+      alerts: [
+        { l: "High Cholesterol", v: "238 mg/dL (Critical >220)", t: "red" },
+        { l: "TSH Abnormal", v: "7.2 uIU/mL (Normal: 0.35-4.94)", t: "red" },
+        { l: "High LDL", v: "162 mg/dL (Normal: <130)", t: "red" }
+      ],
+      trends: [
+        { l: "Lipids", v: "↑ Critical" },
+        { l: "Thyroid", v: "↑ Abnormal" },
+        { l: "Activity", v: "↓ Sedentary" },
+        { l: "BMI", v: "↑ Overweight" }
+      ],
+      nudges: ["🏃 30 min cardio daily — reduce cardiac risk", "🥦 Low-fat diet — avoid fried/processed food", "💊 Thyroid medication — consult doctor urgently", "🛌 7-8 hrs sleep — reduces cortisol & lipids"]
+    },
+    {
+      name: "Priya Nair", id: "C-1120", initials: "PN", score: 93,
+      meta: "Age 27 · Female · A+",
+      sub: "Excellent! All parameters within normal range. Keep it up!",
+      alerts: [
+        { l: "All Clear", v: "All parameters within normal range", t: "green" }
+      ],
+      trends: [
+        { l: "Vitality", v: "→ Excellent" },
+        { l: "BMI", v: "→ 22.1" },
+        { l: "Glucose", v: "→ Stable" },
+        { l: "Activity", v: "↑ Active" }
+      ],
+      nudges: ["🎯 Maintain current routine — you're doing great!", "💧 Keep hydrating well", "🧘 Add 10 min yoga for mental wellness", "🌿 Annual booster check scheduled for Sep 2026"]
+    }
+  ];
+
+  function updateEmployee(idx) {
+    const e = employees[idx];
+
+    document.getElementById('hero-greeting').textContent = 'Hi ' + e.name.split(' ')[0] + '! 👋';
+    document.getElementById('hero-sub').textContent = e.sub;
+    document.getElementById('hero-score').textContent = e.score;
+    document.getElementById('hero-flags').textContent = e.alerts.filter(a => a.t !== 'green').length;
+    document.getElementById('side-name').textContent = e.name;
+    document.getElementById('side-avatar').textContent = e.initials;
+    document.getElementById('side-meta').textContent = e.meta;
+
+    const hero = document.getElementById('hero-banner');
+    if (e.score < 60) {
+      hero.style.background = 'linear-gradient(135deg, #7f1d1d, #b91c1c)';
+      document.getElementById('hero-badge').textContent = '🔴 High Risk';
+      document.getElementById('hero-badge').style.background = 'rgba(239,68,68,0.25)';
+      document.getElementById('hero-badge').style.color = '#fca5a5';
+    } else if (e.score < 75) {
+      hero.style.background = 'linear-gradient(135deg, #78350f, #b45309)';
+      document.getElementById('hero-badge').textContent = '🟡 Needs Attention';
+      document.getElementById('hero-badge').style.background = 'rgba(245,158,11,0.25)';
+      document.getElementById('hero-badge').style.color = '#fcd34d';
+    } else {
+      hero.style.background = 'linear-gradient(135deg, var(--primary), #1a5fa8)';
+      document.getElementById('hero-badge').textContent = '🟢 Active Coverage';
+      document.getElementById('hero-badge').style.background = 'rgba(16,185,129,0.25)';
+      document.getElementById('hero-badge').style.color = '#6ee7b7';
+    }
+
+    // Alerts
+    document.getElementById('alert-list').innerHTML = e.alerts.map(a => `
+      <div class="alert-item">
+        <div class="alert-dot" style="background:${a.t==='red'?'#ef4444':a.t==='orange'?'#f59e0b':'#10b981'}"></div>
+        <div style="flex:1;">
+          <p style="font-size:14px; font-weight:700;">${a.l}</p>
+          <small style="color:var(--muted);">${a.v}</small>
+        </div>
+        <span class="tag tag-${a.t}">${a.t==='red'?'Danger':a.t==='orange'?'Watch':'Normal'}</span>
+      </div>`).join('');
+
+    // Trends
+    document.getElementById('trend-list').innerHTML = e.trends.map(t => `
+      <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f8fafc; font-size:13px;">
+        <span style="color:var(--muted);">${t.l}</span>
+        <span style="font-weight:700; color:${t.v.includes('↑')?'#ef4444':t.v.includes('↓')?'#f59e0b':'#10b981'}">${t.v}</span>
+      </div>`).join('');
+
+    // Nudges
+    document.getElementById('nudge-list').innerHTML = e.nudges.map(n => `
+      <div class="nudge-item"><span class="nudge-icon">${n.split(' ')[0]}</span>${n.slice(n.indexOf(' ')+1)}</div>`).join('');
+
+    // Consult prompt
+    const hasRisk = e.alerts.some(a => a.t === 'red');
+    document.getElementById('consult-prompt').style.display = hasRisk ? 'block' : 'none';
+  }
+
+  function updateMember(val) {
+    if (val === 'self') {
+      updateEmployee(document.getElementById('emp-select').value);
+    }
+  }
+
+  function showPage(id, btn) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    if (btn) btn.classList.add('active');
+  }
+
+  function toggleMobile() {
+    document.getElementById('mobile-drawer').classList.toggle('open');
+  }
+
+  function closeMobile() {
+    document.getElementById('mobile-drawer').classList.remove('open');
+  }
+
+  // Init
+  updateEmployee(0);
+</script>
+</body>
+</html>
